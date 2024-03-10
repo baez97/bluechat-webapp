@@ -13,8 +13,11 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  query Messages($userId: ID!, $since: DateTime!) {\n    Messages(userId: $userId, since: $since) {\n      id\n      content\n      timestamp\n    }\n  }\n": types.MessagesDocument,
-    "\n  subscription SubscribeToNewMessages($userId: ID!, $since: DateTime!) {\n    NewMessages(userId: $userId, since: $since) {\n      id\n      content\n      timestamp\n    }\n  }\n": types.SubscribeToNewMessagesDocument,
+    "\n  fragment MessageFields on Message {\n    id\n    content\n    groupId\n    senderId\n    receiverId\n    timestamp\n  }\n": types.MessageFieldsFragmentDoc,
+    "\n  query GetInitialMessages($userId: ID!, $since: DateTime!) {\n    Messages(userId: $userId, since: $since) {\n      id\n      content\n      groupId\n      senderId\n      receiverId\n      timestamp\n    }\n  }\n": types.GetInitialMessagesDocument,
+    "\n  query GetChatMessages($userId: ID!, $since: DateTime!) {\n    ChatMessages(userId: $userId, since: $since) {\n      senderId\n      messages {\n        id\n        content\n        groupId\n        senderId\n        receiverId\n        timestamp\n      }\n    }\n  }\n": types.GetChatMessagesDocument,
+    "\n  subscription SubscribeToNewMessages($userId: ID!, $since: DateTime!) {\n    NewMessages(userId: $userId, since: $since) {\n      senderId\n      messages {\n        id\n        content\n        groupId\n        senderId\n        receiverId\n        timestamp\n      }\n    }\n  }\n": types.SubscribeToNewMessagesDocument,
+    "\n  query GetUsers($userId: ID!) {\n    GetUsers(userId: $userId) {\n      id\n      displayName\n      username\n      companyId\n      photoUrl\n      timestamp\n    }\n  }\n": types.GetUsersDocument,
 };
 
 /**
@@ -34,11 +37,23 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query Messages($userId: ID!, $since: DateTime!) {\n    Messages(userId: $userId, since: $since) {\n      id\n      content\n      timestamp\n    }\n  }\n"): (typeof documents)["\n  query Messages($userId: ID!, $since: DateTime!) {\n    Messages(userId: $userId, since: $since) {\n      id\n      content\n      timestamp\n    }\n  }\n"];
+export function gql(source: "\n  fragment MessageFields on Message {\n    id\n    content\n    groupId\n    senderId\n    receiverId\n    timestamp\n  }\n"): (typeof documents)["\n  fragment MessageFields on Message {\n    id\n    content\n    groupId\n    senderId\n    receiverId\n    timestamp\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  subscription SubscribeToNewMessages($userId: ID!, $since: DateTime!) {\n    NewMessages(userId: $userId, since: $since) {\n      id\n      content\n      timestamp\n    }\n  }\n"): (typeof documents)["\n  subscription SubscribeToNewMessages($userId: ID!, $since: DateTime!) {\n    NewMessages(userId: $userId, since: $since) {\n      id\n      content\n      timestamp\n    }\n  }\n"];
+export function gql(source: "\n  query GetInitialMessages($userId: ID!, $since: DateTime!) {\n    Messages(userId: $userId, since: $since) {\n      id\n      content\n      groupId\n      senderId\n      receiverId\n      timestamp\n    }\n  }\n"): (typeof documents)["\n  query GetInitialMessages($userId: ID!, $since: DateTime!) {\n    Messages(userId: $userId, since: $since) {\n      id\n      content\n      groupId\n      senderId\n      receiverId\n      timestamp\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetChatMessages($userId: ID!, $since: DateTime!) {\n    ChatMessages(userId: $userId, since: $since) {\n      senderId\n      messages {\n        id\n        content\n        groupId\n        senderId\n        receiverId\n        timestamp\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetChatMessages($userId: ID!, $since: DateTime!) {\n    ChatMessages(userId: $userId, since: $since) {\n      senderId\n      messages {\n        id\n        content\n        groupId\n        senderId\n        receiverId\n        timestamp\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  subscription SubscribeToNewMessages($userId: ID!, $since: DateTime!) {\n    NewMessages(userId: $userId, since: $since) {\n      senderId\n      messages {\n        id\n        content\n        groupId\n        senderId\n        receiverId\n        timestamp\n      }\n    }\n  }\n"): (typeof documents)["\n  subscription SubscribeToNewMessages($userId: ID!, $since: DateTime!) {\n    NewMessages(userId: $userId, since: $since) {\n      senderId\n      messages {\n        id\n        content\n        groupId\n        senderId\n        receiverId\n        timestamp\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetUsers($userId: ID!) {\n    GetUsers(userId: $userId) {\n      id\n      displayName\n      username\n      companyId\n      photoUrl\n      timestamp\n    }\n  }\n"): (typeof documents)["\n  query GetUsers($userId: ID!) {\n    GetUsers(userId: $userId) {\n      id\n      displayName\n      username\n      companyId\n      photoUrl\n      timestamp\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
